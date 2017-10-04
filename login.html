@@ -15,8 +15,9 @@
     <div class="loginer">
         <div class="container ">
             账号：<input class="form-control" id="username" placeholder="账号" type="text" maxlength="20" style="width: 30%; margin-bottom: 15px" />
-            密码：<input class="form-control" id="password" placeholder="密码" type="text" maxlength="20" style="width: 30%; margin-bottom: 15px" />
-           <button class="btn btn-primary" id="btn_login" style="margin-top:15px">登 录</button>
+            密码：<input class="form-control" id="password" placeholder="密码" type="password" maxlength="20" style="width: 30%; margin-bottom: 15px" />
+            <button class="btn btn-primary" id="btn_login" style="margin-top:15px">登 录</button>
+            <button class="btn btn-default" id="btn_reg" style="margin-top:15px">注 册</button>
         </div>
     </div>
     <div class="container" id="chat_box">
@@ -79,10 +80,28 @@
     }
 
     $(function () {
+        $('#btn_reg').click(function(){
+            if(!$('#username').val()){
+                alert('请输入用户名');
+                return false;
+            }
+            if(!$('#password').val()){
+                alert('请输入密码');
+                return false;
+            }
+            var url = "/regist?username=" + $('#username').val() + "&password=" + $('#password').val();
+            $.ajax({url:url,success:function(result){
+                alert(result.message)
+            },dataType:'json'});
+        });
         
         $('#btn_login').click(function(){
             if(!$('#username').val()){
                 alert('请输入用户名');
+                return false;
+            }
+            if(!$('#password').val()){
+                alert('请输入密码');
                 return false;
             }
             $('#txtUserName').html($('#username').val())
@@ -91,7 +110,7 @@
              //初始化工具方法
             var tl = new tool();
 
-            var wsUrl = "ws://127.0.0.1:8888/webSocket";
+            var wsUrl = "ws://127.0.0.1:8888/webSocket?username=" + $('#txtUserName').html() + "&password=" + $('#password').val();
             ws = new WebSocket(wsUrl);
 
             try {
@@ -113,6 +132,7 @@
 
                     //console.log(result.data);
                     var data = JSON.parse(result.data);
+                    console.log(data)
                     $(data.UserMsgs).each(function (i, item) {
                         showMsg("divShow", tl.paperDiv("【" + item.UserName + "】：" + item.Msg), true);
                     });
