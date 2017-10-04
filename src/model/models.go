@@ -9,6 +9,13 @@ type User struct {
     Name        string
 	Pwd			string
 }
+// 多字段唯一键
+func (u *User) TableUnique() [][]string {
+	return [][]string{
+		[]string{"Name"},
+	}
+}
+
 
 func init() {
     // 需要在init中注册定义的model
