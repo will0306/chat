@@ -23,7 +23,7 @@ var w_log io.Writer
 
 func init() {
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:@/chat?charset=utf8")
+	orm.RegisterDataBase("default", "mysql", "user_t1:1zxf32d@/t1?charset=utf8")
 	orm.RunSyncdb("default", false, true)
 	orm.Debug = true
 	o = orm.NewOrm()
@@ -53,7 +53,7 @@ func h_index(w http.ResponseWriter, r *http.Request) {
 }
 
 func regist(w http.ResponseWriter, r *http.Request){
-	u := new(model.User)
+	u := new(model.BaseUser)
 	result := Response{Status : 1, Message : "注册成功", Data : ""}
 
 	if r.FormValue("username") != "" {
@@ -75,8 +75,8 @@ func regist(w http.ResponseWriter, r *http.Request){
 		w.Write([]byte("error"))
 		return
     }
-	u2 := new(model.User)
-	qs := o.QueryTable("user")
+	u2 := new(model.BaseUser)
+	qs := o.QueryTable("base_user")
 	fmt.Println(qs.Filter("name", u.Name).One(u2))
 	fmt.Println(u2.Name)
 	w.Write(b)
@@ -88,8 +88,8 @@ func h_webSocket(ws *websocket.Conn) {
 	//----------验证用户----------- start
 	username := ws.Request().FormValue("username")
 	pwd := fmt.Sprintf("%x",md5.Sum([]byte(ws.Request().FormValue("password"))))
-	u := new(model.User)
-	qs := o.QueryTable("user")
+	u := new(model.BaseUser)
+	qs := o.QueryTable("base_user")
 	if err := qs.Filter("name", username).One(u); err != nil || u.Pwd != pwd || u.Name == "" {
 		var err_datas Datas
 		err_Msg := UserMsg{UserName : "System", DataType : "send"}

@@ -75,7 +75,7 @@
         //初始化工具方法
         var tl = new tool();
 
-        var wsUrl = "ws://127.0.0.1:8888/webSocket";
+        var wsUrl = "ws://"+window.location.host+"/webSocket";
         ws = new WebSocket(wsUrl);
 
         try {

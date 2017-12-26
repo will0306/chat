@@ -110,7 +110,7 @@
              //初始化工具方法
             var tl = new tool();
 
-            var wsUrl = "ws://127.0.0.1:8888/webSocket?username=" + $('#txtUserName').html() + "&password=" + $('#password').val();
+            var wsUrl = "ws://"+window.location.host+"/webSocket?username=" + $('#txtUserName').html() + "&password=" + $('#password').val();
             ws = new WebSocket(wsUrl);
 
             try {

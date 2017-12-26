@@ -4,13 +4,13 @@ import (
     "github.com/astaxie/beego/orm"
 )
 
-type User struct {
+type BaseUser struct {
     Id          int
     Name        string
 	Pwd			string
 }
 // 多字段唯一键
-func (u *User) TableUnique() [][]string {
+func (u *BaseUser) TableUnique() [][]string {
 	return [][]string{
 		[]string{"Name"},
 	}
@@ -19,5 +19,5 @@ func (u *User) TableUnique() [][]string {
 
 func init() {
     // 需要在init中注册定义的model
-    orm.RegisterModel(new(User))
+    orm.RegisterModel(new(BaseUser))
 }
